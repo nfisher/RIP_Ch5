@@ -1,0 +1,14 @@
+<ivy-module version="2.0">
+    <info organisation="com.restbucks" module="hypermedia"/>
+    <dependencies>
+        <dependency org="junit" name="junit" rev="4.6"/>
+        <dependency org="org.mockito" name="mockito-all" rev="1.7"/>
+        <dependency org="org.hamcrest" name="hamcrest-all" rev="1.2-dev1"/>
+        <dependency org="com.sun.grizzly" name="grizzly-servlet-webserver" rev="1.8.3"/>
+        <dependency org="com.sun.jersey" name="jersey-server" rev="1.0"/>
+        <dependency org="com.sun.jersey" name="jersey-client" rev="1.0"/>
+        <dependency org="com.sun.jersey" name="jersey-core" rev="1.0"/>
+        <dependency org="joda-time" name="joda-time" rev="1.6"/>
+        <dependency org="asm" name="asm-all" rev="3.1"/>
+    </dependencies>
+</ivy-module>

@@ -1,0 +1,110 @@
+<project xmlns:ivy="antlib:org.apache.ivy.ant" name="RestbucksOrderingService" default="dist">
+
+    <property name="source.dir" value="src/main/java"/>
+    <property name="test.dir" value="src/test/java"/>
+    <property name="functional.dir" value="src/functionaltest/java"/>
+
+    <property name="target.dir" value="target"/>
+    <property name="source.target.dir" value="${target.dir}/build"/>
+    <property name="test.target.dir" value="${target.dir}/test"/>
+    <property name="functional.target.dir" value="${target.dir}/functionaltest"/>
+
+    <property name="lib.dir" value="lib"/>
+	
+    <import file="install-ivy.xml"/>
+
+    <target name="clean">
+        <delete dir="${target.dir}"/>
+    </target>
+    
+    <target name="prepare">
+        <mkdir dir="${target.dir}"/>
+        <mkdir dir="${source.target.dir}"/>
+        <mkdir dir="${test.target.dir}"/>
+        <mkdir dir="${functional.target.dir}"/>
+    </target>
+	
+    <target name="resolve" depends="prepare,install-ivy">
+        <ivy:retrieve />
+    </target>
+	
+    <target name="compile" depends="resolve">
+        <path id="lib.path">
+            <fileset dir="${lib.dir}" includes="*.jar"/>
+        </path>
+	<javac destdir="${source.target.dir}" includes="**/*.java">
+            <src path="${source.dir}"/>
+            <classpath>
+                <path refid="lib.path" />
+                <pathelement location="${source.dir}" />
+            </classpath>
+        </javac>
+    </target>
+
+	
+    <target name="unit-test" depends="compile">
+        <path id="test.class.path">
+            <fileset dir="${lib.dir}" includes="*.jar"/>
+            <pathelement location="${source.target.dir}" />
+        </path>
+        <javac destdir="${test.target.dir}" includes="**/*.java">
+            <src path="${test.dir}"/>
+            <include name="${source.target.dir}"/>
+            <classpath>
+                <path refid="test.class.path" />
+            </classpath>
+        </javac>
+
+        <path id="junit.test.path">
+            <fileset dir="${lib.dir}" includes="*.jar"/>
+            <pathelement location="${test.target.dir}" />
+            <pathelement location="${source.target.dir}" />
+        </path>
+        <junit>
+            <classpath refid="junit.test.path" />
+            <formatter type="brief" usefile="false"/>
+            <batchtest>
+                <fileset dir="${test.target.dir}" includes="**/**Test.class"/>
+            </batchtest>
+        </junit>
+    </target>
+
+    <target name="functional-test" depends="unit-test">
+        <path id="functional.class.path">
+            <fileset dir="${lib.dir}" includes="*.jar"/>
+            <pathelement location="${source.target.dir}" />
+            <pathelement location="${test.target.dir}" />
+        </path>
+        <javac destdir="${functional.target.dir}" includes="**/*.java">
+            <src path="${functional.dir}"/>
+            <include name="${source.target.dir}"/>
+            <classpath>
+                <path refid="functional.class.path" />
+            </classpath>
+        </javac>
+
+        <path id="junit.test.path">
+            <fileset dir="${lib.dir}" includes="*.jar"/>
+            <pathelement location="${functional.target.dir}" />
+            <pathelement location="${test.target.dir}" />
+            <pathelement location="${source.target.dir}" />
+        </path>
+        <junit>
+            <classpath refid="junit.test.path" />
+            <formatter type="brief" usefile="false"/>
+            <batchtest>
+                <fileset dir="${functional.target.dir}" includes="**/**Test.class"/>
+            </batchtest>
+        </junit>
+    </target>
+
+    <target name="dist" description="build the distribution" depends="functional-test">
+		<jar destfile="${target.dir}/orderingsvc.jar">
+			<fileset dir="${source.target.dir}" includes="**/*.class"/>
+            <fileset dir="${test.target.dir}" includes="**/*.class"/>
+            <fileset dir="${functional.target.dir}" includes="**/*.class"/>
+		</jar>
+    </target>
+
+</project>
+

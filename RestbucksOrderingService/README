@@ -1,0 +1,28 @@
+
+Prerequistes
+============
+
+
+    java 1.5 or greater
+    ant 1.7 or greater
+    Internet Connection
+
+
+Note:
+
+This module uses Ant and IVY to build the codebase.  IVY is bootstrapped from the ant script,
+this is done so that you do not need to install it yourself.  It is also configured so as to
+keep all artifacts within this directory tree, ivy is downloaded to {cwd}/.ivy and resolution
+artifacts are downloaded to {cwd}/.ivy/cache
+
+
+
+Build Instructions
+==================
+
+To build and verify the build execute the following:
+
+bash$ ant
+
+
+

@@ -1,0 +1,1 @@
+Disclaimer: All source code is made available to you under the terms of the Creative Commons Share-Alike License. Please note that these examples are provided to you as supplemantary material to the book "REST in Practice". Please use at your own risk. These examples have not been tested extensively. There bound to be bugs and inneficiences.
